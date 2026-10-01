@@ -1,5 +1,8 @@
 import chromadb
 from fastapi import APIRouter
+from app.rag.retriever import Retriever
+
+retriever = Retriever()
 
 router = APIRouter(
     prefix="/api/rag",
@@ -9,6 +12,21 @@ router = APIRouter(
 CHROMA_PATH = "chroma_db"
 COLLECTION_NAME = "trade_finance"
 
+@router.get("/search")
+def search_documents(
+    q: str,
+    top_k: int = 3
+):
+    results = retriever.search(
+        query=q,
+        top_k=top_k
+    )
+
+    return {
+        "query": q,
+        "results": results
+    }
+    
 
 @router.get("/documents")
 def get_documents():
