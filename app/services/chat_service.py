@@ -1,22 +1,9 @@
-"""Chat service placeholder.
+import re
 
-We will implement the application/service layer in the next step.
-"""
-from app.llm.llm_client import LLMClient
-
-
-class ChatService:
-
-    def __init__(self):
-        self.llm_client = LLMClient()
-
-    def process_message(self, message: str) -> str:
-
-        return self.llm_client.generate_response(
-            message
-        )
 from app.llm.llm_client import LLMClient
 from app.rag.retriever import Retriever
+from app.agents.router import route_message
+from app.tools.banking_tools import get_letter_of_credit_status
 
 
 class ChatService:
@@ -25,7 +12,28 @@ class ChatService:
         self.llm_client = LLMClient()
         self.retriever = Retriever()
 
-    def process_message(self, message: str) -> str:
+    def process_message(
+        self,
+        message: str
+    ) -> str:
+
+        route = route_message(
+            message
+        )
+
+        if route == "tool":
+            return self._process_tool(
+                message
+            )
+
+        return self._process_rag(
+            message
+        )
+
+    def _process_rag(
+        self,
+        message: str
+    ) -> str:
 
         results = self.retriever.search(
             query=message,
@@ -41,3 +49,24 @@ class ChatService:
             message=message,
             context=context
         )
+
+    def _process_tool(
+        self,
+        message: str
+    ) -> str:
+
+        match = re.search(
+            r"\bLC-\d+\b",
+            message.upper()
+        )
+
+        if not match:
+            return "I could not identify the letter of credit ID."
+
+        lc_id = match.group()
+
+        result = get_letter_of_credit_status(
+            lc_id
+        )
+
+        return str(result)
