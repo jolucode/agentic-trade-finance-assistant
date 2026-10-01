@@ -11,7 +11,11 @@ class LLMClient:
             api_key=OPENROUTER_API_KEY
         )
 
-    def generate_response(self, message: str) -> str:
+    def generate_response(
+        self,
+        message: str,
+        context: str
+    ) -> str:
 
         response = self.client.chat.completions.create(
             model="openrouter/free",
@@ -21,23 +25,25 @@ class LLMClient:
                     "content": """
                     You are a Trade Finance banking assistant.
 
-                    Your specialization includes:
-                    - Letters of Credit
-                    - International Trade
-                    - Imports and Exports
-                    - SWIFT
-                    - Banking operations related to Trade Finance
+                    Answer using the provided context.
 
                     Rules:
-                    - Explain concepts clearly and professionally.
+                    - Use the context as the main source of truth.
                     - Do not invent banking policies or customer information.
-                    - If you do not know something, say that you do not have enough information.
-                    - Keep answers focused on Trade Finance and banking.
+                    - If the context does not contain enough information,
+                      clearly say that there is not enough information.
+                    - Keep answers clear and professional.
                     """
                 },
                 {
                     "role": "user",
-                    "content": message
+                    "content": f"""
+                    Context:
+                    {context}
+
+                    Question:
+                    {message}
+                    """
                 }
             ]
         )
