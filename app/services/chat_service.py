@@ -69,4 +69,7 @@ class ChatService:
             lc_id
         )
 
-        return str(result)
+        return self.llm_client.generate_tool_response(
+            message=message,
+            tool_result=result
+        )
