@@ -1,0 +1,17 @@
+A letter of credit is a commitment issued by a bank on behalf of a buyer.
+
+The bank agrees to pay the seller if the seller presents the required documents and complies with the terms of the letter of credit.
+
+Common documents may include a commercial invoice, bill of lading, packing list, insurance certificate, and certificate of origin.
+
+Letters of credit are commonly used in international trade because they reduce payment risk between buyers and sellers who may not know each other.
+
+An applicant is usually the buyer or importer.
+
+The beneficiary is usually the seller or exporter.
+
+The issuing bank opens the letter of credit at the request of the applicant.
+
+A confirming bank may add its own payment undertaking to the letter of credit.
+
+Documentary compliance is essential. Banks examine documents rather than the physical goods.
