@@ -8,10 +8,7 @@ def route_message(
 
     pattern = r"\bLC-\d+\b"
 
-    if re.search(
-        pattern,
-        message.upper()
-    ):
+    if re.search(pattern, message.upper()):
         return "tool"
 
     follow_up_keywords = [

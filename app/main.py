@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from app.api.rag import router as rag_router
 from app.api.chat import router as chat_router
 from app.api.tools import router as tools_router
+from app.core.logging_config import configure_logging
+
+configure_logging()
 
 app = FastAPI(
     title="Agentic Trade Finance Assistant",
