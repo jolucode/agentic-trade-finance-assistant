@@ -20,7 +20,8 @@ chat_service = ChatService()
 def chat(request: ChatRequest):
 
     answer = chat_service.process_message(
-        request.message
+        message=request.message,
+        thread_id=request.thread_id
     )
 
     return ChatResponse(

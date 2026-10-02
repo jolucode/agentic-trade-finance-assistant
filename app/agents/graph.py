@@ -6,8 +6,11 @@ from app.agents.router import route_message
 from app.rag.retriever import Retriever
 from app.tools.banking_tools import get_letter_of_credit_status
 from app.llm.llm_client import LLMClient
+from langgraph.checkpoint.memory import InMemorySaver
 
 import re
+
+
 
 
 class AgentState(TypedDict, total=False):
@@ -18,6 +21,8 @@ class AgentState(TypedDict, total=False):
     answer: str
 
 
+
+memory = InMemorySaver()
 retriever = Retriever()
 llm_client = LLMClient()
 
@@ -25,7 +30,8 @@ llm_client = LLMClient()
 def router_node(state: AgentState):
 
     route = route_message(
-        state["message"]
+        message=state["message"],
+        last_lc_id=state.get("last_lc_id")
     )
 
     return {
@@ -57,7 +63,13 @@ def tool_node(state: AgentState):
         state["message"].upper()
     )
 
-    if not match:
+    if match:
+        lc_id = match.group()
+
+    else:
+        lc_id = state.get("last_lc_id")
+
+    if not lc_id:
         return {
             "tool_result": {
                 "found": False,
@@ -65,14 +77,13 @@ def tool_node(state: AgentState):
             }
         }
 
-    lc_id = match.group()
-
     result = get_letter_of_credit_status(
         lc_id
     )
 
     return {
-        "tool_result": result
+        "tool_result": result,
+        "last_lc_id": lc_id
     }
 
 
@@ -171,4 +182,6 @@ builder.add_edge(
 )
 
 
-agent_graph = builder.compile()
+agent_graph = builder.compile(
+    checkpointer=memory
+)

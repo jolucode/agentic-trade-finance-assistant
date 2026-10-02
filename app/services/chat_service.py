@@ -5,11 +5,19 @@ class ChatService:
 
     def process_message(
         self,
-        message: str
+        message: str,
+        thread_id: str
     ) -> str:
 
-        result = agent_graph.invoke({
-            "message": message
-        })
+        result = agent_graph.invoke(
+            {
+                "message": message
+            },
+            config={
+                "configurable": {
+                    "thread_id": thread_id
+                }
+            }
+        )
 
         return result["answer"]
