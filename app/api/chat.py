@@ -17,9 +17,9 @@ def hello():
 chat_service = ChatService()
 
 @router.post("", response_model=ChatResponse)
-def chat(request: ChatRequest):
+async def chat(request: ChatRequest):
 
-    answer = chat_service.process_message(
+    answer = await chat_service.process_message(
         message=request.message,
         thread_id=request.thread_id
     )

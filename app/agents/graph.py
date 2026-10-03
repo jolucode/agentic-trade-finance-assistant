@@ -5,7 +5,7 @@ import logging
 import time
 from app.agents.router import route_message
 from app.rag.retriever import Retriever
-from app.tools.banking_tools import get_letter_of_credit_status
+from app.mcp.banking_client import get_lc_status_via_mcp
 from app.llm.llm_client import LLMClient
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -73,7 +73,7 @@ def rag_node(state: AgentState):
         "context": context
     }
 
-def tool_node(state: AgentState):
+async def tool_node(state: AgentState):
 
     start = time.perf_counter()
 
@@ -100,7 +100,7 @@ def tool_node(state: AgentState):
             }
         }
 
-    result = get_letter_of_credit_status(
+    result = await get_lc_status_via_mcp(
         lc_id
     )
 

@@ -3,13 +3,13 @@ from app.agents.graph import agent_graph
 
 class ChatService:
 
-    def process_message(
+    async def process_message(
         self,
         message: str,
         thread_id: str
     ) -> str:
 
-        result = agent_graph.invoke(
+        result = await agent_graph.ainvoke(
             {
                 "message": message
             },
