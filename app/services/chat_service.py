@@ -17,7 +17,8 @@ class ChatService:
                 "configurable": {
                     "thread_id": thread_id
                 }
-            }
+            },
+            "recursion_limit": 10
         )
 
         return result["answer"]
