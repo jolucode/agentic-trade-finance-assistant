@@ -1,0 +1,58 @@
+{
+  "routing": [
+    {
+      "question": "What is the status of LC-10025?",
+      "expected_route": "tool"
+    },
+    {
+      "question": "Who is the beneficiary in a letter of credit?",
+      "expected_route": "rag"
+    },
+    {
+      "question": "What documents are commonly required for a letter of credit?",
+      "expected_route": "rag"
+    }
+  ],
+
+  "tools": [
+    {
+      "question": "What is the status of LC-10025?",
+      "expected_lc_id": "LC-10025",
+      "expected_status": "UNDER_REVIEW"
+    },
+    {
+      "question": "Tell me about LC-20050",
+      "expected_lc_id": "LC-20050",
+      "expected_status": "APPROVED"
+    }
+  ],
+
+  "rag": [
+    {
+      "question": "Who is the beneficiary?",
+      "expected_keywords": [
+        "seller",
+        "exporter"
+      ]
+    },
+    {
+      "question": "What documents may be required for a letter of credit?",
+      "expected_keywords": [
+        "commercial invoice",
+        "bill of lading"
+      ]
+    }
+  ],
+
+  "memory": [
+    {
+      "thread_id": "eval-memory-001",
+      "first_question": "What is the status of LC-10025?",
+      "second_question": "And what amount is it?",
+      "expected_keywords": [
+        "50000",
+        "USD"
+      ]
+    }
+  ]
+}
