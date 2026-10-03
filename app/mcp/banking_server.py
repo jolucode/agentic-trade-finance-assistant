@@ -25,6 +25,8 @@ def get_lc_status(
     lc_id: str
 ) -> LetterOfCreditResult:
 
+    
+
     result = get_letter_of_credit_status(
         lc_id
     )

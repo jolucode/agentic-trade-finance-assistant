@@ -144,6 +144,13 @@ def rag_answer_node(state: AgentState):
 def tool_answer_node(state: AgentState):
 
     start = time.perf_counter()
+    
+    tool_result = state["tool_result"]
+
+    if tool_result.get("error"):
+        return {
+            "answer": tool_result["message"]
+        }
 
     answer = llm_client.generate_tool_response(
         message=state["message"],
